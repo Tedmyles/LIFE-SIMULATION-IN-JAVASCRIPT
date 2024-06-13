@@ -1,4 +1,4 @@
-![Screenshot 2024-06-13 120434](https://github.com/Tedmyles/LIFE-SIMULATION-IN-JAVASCRIPT/assets/134784483/94f4bf33-9276-4ddb-9bc5-1c6fe26dbc01)# LIFE SIMULATION IN JAVASCRIPT
+**LIFE SIMULATION**
  Life simulation project created using javascript
 
 This project implements a basic life simulation where plants, prey, and predators interact within a confined environment represented by a grid on a canvas. The simulation is designed to showcase emergent behaviors such as predation, reproduction, and population dynamics.
