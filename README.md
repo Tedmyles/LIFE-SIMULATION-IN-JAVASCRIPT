@@ -24,4 +24,5 @@ Population Dynamics: The simulation tracks and displays the counts of prey and p
      -More complex behaviors such as territory marking, group behavior, or environmental adaptation.
      -User interaction to adjust simulation parameters or observe specific behaviors.
      -Enhanced visualizations or statistical analysis of population trends over time.
-     ![life_simulation](https://github.com/Tedmyles/LIFE-SIMULATION-IN-JAVASCRIPT/assets/134784483/c4cd7445-4f7a-4294-8f00-d51b40e62462)
+     
+<img width="916" alt="Screenshot 2024-06-14 120213" src="https://github.com/Tedmyles/LIFE-SIMULATION-IN-JAVASCRIPT/assets/134784483/e0d466a4-1f07-4945-b14f-f9df4b795218">
