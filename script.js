@@ -1,20 +1,28 @@
 const canvas = document.getElementById('simulationCanvas');
 const ctx = canvas.getContext('2d');
-canvas.width = 800;
-canvas.height = 800;
+canvas.width = 1200;
+canvas.height = 500;
 
 const gridSize = 20;
 const cols = canvas.width / gridSize;
 const rows = canvas.height / gridSize;
 const moveSpeed = 0.2; // Determines the smoothness of movement
 
+let backgroundImage = new Image();
+backgroundImage.src = 'environment.jpeg';
+
+let plantImage = new Image();
+plantImage.src = 'berry.png';
+
 class Entity {
-    constructor(x, y, type) {
+    constructor(x, y, type, lifespan) {
         this.x = x;
         this.y = y;
         this.type = type;
         this.targetX = x;
         this.targetY = y;
+        this.lifespan = lifespan;
+        this.age = 0;
     }
 
     setTargetPosition(x, y) {
@@ -35,7 +43,16 @@ class Entity {
             this.y = this.targetY;
         }
     }
+
+    ageOneStep() {
+        this.age++;
+    }
+
+    isOld() {
+        return this.age >= this.lifespan;
+    }
 }
+
 
 class Plant extends Entity {
     constructor(x, y) {
@@ -43,15 +60,16 @@ class Plant extends Entity {
     }
 
     draw() {
-        ctx.fillStyle = 'green';
-        ctx.fillRect(this.x * gridSize, this.y * gridSize, gridSize, gridSize);
+        ctx.drawImage(plantImage, this.x * gridSize, this.y * gridSize, gridSize, gridSize);
     }
 }
 
 class Prey extends Entity {
     constructor(x, y) {
-        super(x, y, 'R');
+        super(x, y, 'R', 100); // Prey has a lifespan of 100 steps
         this.eatenPlants = 0; // Track plants eaten
+        this.starvationThreshold = 50; // Prey dies if it doesn't eat for 50 steps
+        this.stepsSinceLastMeal = 0;
     }
 
     move(predatorList) {
@@ -82,6 +100,7 @@ class Prey extends Entity {
         }
 
         super.move();
+        this.stepsSinceLastMeal++;
     }
 
     draw() {
@@ -91,17 +110,25 @@ class Prey extends Entity {
 
     eatPlant() {
         this.eatenPlants++;
-        if (this.eatenPlants >= 10) {
+        this.stepsSinceLastMeal = 0; // Reset steps since last meal
+        if (this.eatenPlants >= 1) {
             this.eatenPlants = 0;
             return new Prey(this.x, this.y);
         }
         return null;
     }
+
+    isStarving() {
+        return this.stepsSinceLastMeal >= this.starvationThreshold;
+    }
 }
+
 
 class Predator extends Entity {
     constructor(x, y) {
-        super(x, y, 'D');
+        super(x, y, 'D', 150); // Predator has a lifespan of 150 steps
+        this.starvationThreshold = 70; // Predator dies if it doesn't catch prey for 70 steps
+        this.stepsSinceLastMeal = 0;
     }
 
     move(preyList, predatorCount) {
@@ -134,6 +161,7 @@ class Predator extends Entity {
         }
 
         super.move();
+        this.stepsSinceLastMeal++;
     }
 
     draw() {
@@ -143,11 +171,17 @@ class Predator extends Entity {
 
     catchPrey(preyCount, predatorCount) {
         if (preyCount >= predatorCount) {
+            this.stepsSinceLastMeal = 0; // Reset steps since last meal
             return new Predator(this.x, this.y);
         }
         return null;
     }
+
+    isStarving() {
+        return this.stepsSinceLastMeal >= this.starvationThreshold;
+    }
 }
+
 
 class Simulation {
     constructor() {
@@ -199,6 +233,9 @@ class Simulation {
 
         this.preyCount = preyCount;
         this.predatorCount = predatorCount;
+
+        // Update counts
+        this.updateCounts();
     }
 
     handleInteractions(preyCount, predatorCount) {
@@ -238,15 +275,17 @@ class Simulation {
     draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+        // Draw background image
+        ctx.drawImage(backgroundImage, 0, 0, canvas.width, canvas.height);
+
         this.entities.forEach(entity => {
             entity.draw();
         });
+    }
 
-        // Draw the prey and predator counts
-        ctx.fillStyle = 'black';
-        ctx.font = '20px Arial';
-        ctx.fillText(`Prey: ${this.preyCount}`, 10, 20);
-        ctx.fillText(`Predators: ${this.predatorCount}`, 10, 40);
+    updateCounts() {
+        document.getElementById('preyCount').innerText = `Prey: ${this.preyCount}`;
+        document.getElementById('predatorCount').innerText = `Predators: ${this.predatorCount}`;
     }
 
     loop() {

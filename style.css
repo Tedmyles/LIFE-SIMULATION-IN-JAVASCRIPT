@@ -4,6 +4,8 @@ body {
     flex-direction: column;
     align-items: center;
     background-color: #f0f0f0;
+    height: 100vh;
+    justify-content: center;
 }
 
 canvas {
@@ -16,4 +18,26 @@ button {
     font-size: 16px;
     background-color: greenyellow;
     border-color: aliceblue;
+    cursor: pointer;
+}
+
+#canvasContainer {
+    text-align: center;
+}
+#simulationCanvas {
+    border: 1px solid black;
+}
+.infoBox {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+.info {
+    margin: 0 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+#rainButton {
+    display: block;
+    margin: 20px auto;
 }

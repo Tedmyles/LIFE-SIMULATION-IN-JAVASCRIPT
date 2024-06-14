@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Life Simulation</title>
+    <title>Simulation</title>
     <link rel="stylesheet" href="style.css">
+    
 </head>
 <body>
-    <canvas id="simulationCanvas"></canvas>
-    <button id="rainButton">Toggle Rain</button>
+    <div id="canvasContainer">
+        <canvas id="simulationCanvas"></canvas>
+        <div class="infoBox">
+            <div id="preyCount" class="info">Prey: 0</div>
+            <div id="predatorCount" class="info">Predators: 0</div>
+        </div>
+        <button id="rainButton">Toggle Rain</button>
+    </div>
     <script src="script.js"></script>
 </body>
 </html>
